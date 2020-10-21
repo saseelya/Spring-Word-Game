@@ -1,6 +1,7 @@
 package learn.game;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,30 +11,25 @@ import java.util.ArrayList;
 public class GameController {
 
     private final String wordTheyGuess = "The Priest";
-    ArrayList<String> lettersGuessed = new ArrayList<>();
-    StringBuilder temp = new StringBuilder();
+    ArrayList<String> correctLetters = new ArrayList<>();
+    ArrayList<String> incorrectLetters = new ArrayList<>();
+    Temp temp = new Temp(wordTheyGuess);
 
     @PutMapping("/guess/{letter}")
-    public String guessLetter(String letter) {
-        for (int i = 0; i < wordTheyGuess.length(); i++) {
-            if (wordTheyGuess.charAt(i) == ' ') {
-                temp.append(" ");
-            } else if (letter == (wordTheyGuess.charAt(i))){
-                temp.append(wordTheyGuess.charAt(i));
-            } else {
-                temp.append("_");
-            }
+    public String guessLetter(@PathVariable String letter) {
+        if (wordTheyGuess.toLowerCase().contains(letter.toLowerCase())) {
+            correctLetters.add(letter.toLowerCase());
+            temp.updateTemp(letter.toLowerCase(), wordTheyGuess);
         }
-
-        getWord();
-        return "";
+        else {
+            incorrectLetters.add(letter.toLowerCase());
+        }
+        return temp.getTemp().toString();
     }
 
     @GetMapping("/word")
     public String getWord() {
-
-
-        return temp.toString();
+        return temp.getTemp().toString();
     }
 
 
