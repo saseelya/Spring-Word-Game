@@ -24,7 +24,6 @@ public class GameController {
             return getIncorrectLetters() + "\nErr: You've already guessed that letter.";
         }
 
-
         if (wordTheyGuess.toLowerCase().contains(letter.toLowerCase())) {
             correctLetters.add(letter.toLowerCase());
             temp.updateTemp(letter.toLowerCase(), wordTheyGuess);
